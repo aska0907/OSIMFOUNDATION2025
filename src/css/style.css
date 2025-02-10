@@ -1,0 +1,177 @@
+/*index.html
+
+*/   
+.navbar{
+    background: linear-gradient(90deg, #84fab0, #8fd3f4);
+}
+/* Ensure the hero section always fills the viewport height */
+.hero-section {
+    height: 100vh;
+    overflow: hidden; /* Prevents any overflow issues */
+  }
+  
+  /* Make the background image cover the entire container */
+  .hero-section img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+/* Hover Effects */
+.heroButton:hover {
+    transform: translateY(-5px); /* Slightly lift the button on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Icon Animation */
+.heroButton i {
+    transition: transform 0.3s ease;
+}
+
+.heroButton:hover i {
+    transform: scale(1.2); /* Enlarge the icon slightly on hover */
+}
+/* Hover Effect for Donate Button */
+.donate-btn:hover {
+    transform: translateY(-5px); /* Slightly lift the button on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card p {
+        font-size: 1rem; /* Reduce font size for smaller screens */
+    }
+    .donate-btn {
+        font-size: 0.9rem; /* Adjust button font size for smaller screens */
+    }
+}
+/* Hover Effect for Buttons */
+.mission-vision-section .btn:hover {
+    transform: translateY(-5px); /* Slightly lift the button on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .mission-vision-section .card p {
+        font-size: 1rem; /* Reduce font size for smaller screens */
+    }
+    .mission-vision-section .btn {
+        font-size: 0.9rem; /* Adjust button font size for smaller screens */
+    }
+}
+/* Hover Effect for Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    transition: transform 0.3s ease;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    transform: scale(1.2); /* Enlarge the icon slightly on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .carousel-caption {
+        bottom: 10px; /* Adjust caption position for smaller screens */
+    }
+}
+/* Hover Effect for Impact Cards */
+.impact-card:hover {
+    transform: translateY(-10px); /* Slightly lift the card on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .impact-section h2 {
+        font-size: 2rem; /* Reduce font size for smaller screens */
+    }
+    .impact-card p {
+        font-size: 0.9rem; /* Adjust paragraph font size for smaller screens */
+    }
+}
+
+/*donation page 
+
+*/
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
+
+.bg-primary-gradient {
+    background: linear-gradient(135deg, #4a90e2 0%, #2d3e50 100%);
+}
+
+.copy-btn {
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: #4a90e2;
+    color: white;
+}
+
+/*history
+
+*/
+
+/* team*/
+/* Hover Effect for Cards */
+.team-section .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .team-section h1 {
+        font-size: 2rem;
+    }
+    .team-section p {
+        font-size: 1rem;
+    }
+}
+/*projects */
+/* Hover Effect for Content Sections */
+.projects-section .rounded-3:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .projects-section h1 {
+        font-size: 2rem;
+    }
+    .projects-section p {
+        font-size: 1rem;
+    }
+    .projects-section img {
+        height: auto;
+    }
+}
+
+
+/* Hover Effect for Read More Button */
+.read-more:hover {
+    text-decoration: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .news-section h1 {
+        font-size: 2rem;
+    }
+    .news-section p {
+        font-size: 1rem;
+    }
+}

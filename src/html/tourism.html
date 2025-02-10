@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour With Us | OSIM Foundation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(90deg, #ff7e5f, #feb47b); /* Warm Orange Gradient */
+            --gradient-secondary: linear-gradient(90deg, #84fab0, #8fd3f4); /* Soft Green Gradient */
+            --text-dark: #2D3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+            color: var(--text-dark);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c') center/cover;
+            padding: 8rem 0 6rem;
+            color: white;
+            position: relative;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-weight: 700;
+            position: relative;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Impact Cards */
+        .impact-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-secondary);
+            z-index: -1;
+            border-radius: 17px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .impact-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient-secondary);
+            border-radius: 15px;
+            padding: 4rem 2rem;
+            color: white;
+            margin: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cta {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.3);
+        }
+
+        /* Stats Badge */
+        .stats-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            margin: 2rem auto;
+            display: inline-block;
+        }
+
+        /* Image Styling */
+        .image-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        figcaption {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section { padding: 5rem 0 3rem; }
+            .impact-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Tour With Us!</h1>
+            <p class="lead mb-4">Explore Longido District and Experience the Rich Culture and Natural Beauty of Tanzania.</p>
+            <a href="#destinations" class="btn btn-cta mt-3">
+                <i class="bi bi-arrow-right-circle me-2"></i>Discover Destinations
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-5" id="destinations">
+        <div class="container">
+            <h2 class="section-title text-center">Visit Our Home: Longido</h2>
+            <div class="image-container">
+                <img class="imageLong" src="../../assets/images/image2.jpg" alt="Longido Landscape">
+                <figcaption>Longido District in Arusha Region</figcaption>
+            </div>
+            <p>
+                Longido is one of the six districts in the Arusha region of Tanzania, spanning an area of 7,885 km² with a population of approximately 180,000. Located in the northeast, it boasts undeveloped agroecological resources, stunning landscapes, and abundant wildlife.
+            </p>
+
+            <!-- Destination Highlights -->
+            <h2 class="section-title text-center">Where to Visit?</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="impact-card text-center">
+                        <i class="bi bi-person-workspace card-icon"></i>
+                        <h3>Cultural Tourism: Meet the Maasai</h3>
+                        <p>
+                            The Maasai are the predominant group in Longido, leading a pastoralist lifestyle. Women build mud-and-grass bomas, while men and children tend to livestock. Warriors (morani) and spiritual leaders (loiboni) ensure community security.
+                        </p>
+                        <div class="image-container">
+                            <img src="../../assets/images/maasaiboma.jpg" alt="Maasai People">
+                            <figcaption>Maasai Community</figcaption>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="impact-card text-center ">
+                        <i class="bi bi-tree card-icon" ></i>
+                        <h3>Mountain Adventures</h3>
+                        <p>
+                            Explore renowned peaks like Oldonyo Lengai, Mount Meru, Longido-Namanga, Gelai, and Ketumbeini. These mountains offer breathtaking vistas and diverse landscapes.
+                        </p>
+                        <div class="image-container">
+                            <img src="../../assets/images/meru.jpg" alt="Mount Meru">
+                            <figcaption>Mount Meru</figcaption>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lake Natron Section -->
+            <div class="row g-4 mt-4">
+                <div class="col-lg-6">
+                    <div class="impact-card text-center">
+                        <i class="bi bi-droplet card-icon"></i>
+                        <h3>Lake Natron: Nature's Tranquility</h3>
+                        <p>
+                            Lake Natron is home to millions of flamingos and offers unique opportunities for nature enthusiasts. Enjoy photographic tourism and witness the beauty of this natural wonder.
+                        </p>
+                        <div class="image-container">
+                            <img src="../../assets/images/lake natron.png" alt="Lake Natron">
+                            <figcaption>Lake Natron</figcaption>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="impact-card text-center">
+                        <i class="bi bi-paw"></i>
+
+
+                        <h3>Rare and Colorful Birds</h3>
+                        <p>
+                            Encounter rare and colorful birds such as red-and-yellow barbets (<i>Trachyphonus erythrocephalus</i>), silverbills (<i>Empidornis semipartitus</i>), and secretary birds. The plains and slopes also host diverse wildlife, including giraffes, zebras, gazelles, elephants, lions, and more.
+                        </p>
+                        <div class="image-container">
+                            <img src="../../assets/images/barbet.jpg" alt="Red-and-yellow Barbet">
+                            <figcaption>Red-and-yellow Barbet</figcaption>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Attractions -->
+            <div class="impact-card text-center mt-4">
+                <h3>Additional Attractions</h3>
+                <p>
+                    Longido offers various activities, including hunting blocks, campsites around Lake Natron, viewing active volcano eruptions at Oldonyo Lengai, and exploring game-controlled areas with abundant fauna.
+                </p>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="cta-section text-center mt-5">
+                <h2 class="mb-4 display-5 fw-bold">Plan Your Adventure Today</h2>
+                <p class="mb-4 lead">Connect with us to start planning your unforgettable tour experience.</p>
+                <div class="d-flex flex-column flex-lg-row justify-content-center gap-3">
+                    <a href="mailto:askaisdon@gmail.com" class="btn btn-cta">
+                        <i class="bi bi-envelope-arrow-up me-2"></i>Send Inquiry
+                    </a>
+                    <a href="https://wa.me/+255766876286" class="btn btn-cta">
+                        <i class="bi bi-whatsapp me-2"></i>Chat Directly
+                    </a>
+                </div>
+                <div class="mt-4 text-white-50">
+                    <i class="bi bi-info-circle me-2"></i>Response within 24 hours
+                </div>
+            </div>
+
+            <!-- Social Media Links -->
+      
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

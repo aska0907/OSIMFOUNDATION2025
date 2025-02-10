@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../assets/icons/bootstrap-icons.min.css">
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid navs">
+            <!-- Logo -->
+            <a class="navbar-brand osimname fw-bolder fs-4" href="index.html">OSIM FOUNDATION</a>
+    
+            <!-- Toggler Button -->
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Sidebar/Offcanvas -->
+            <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel">OSIM FOUNDATION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+    
+                <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-1">
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav justify-content-center align-items-center fs-6 flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active mx-2" aria-current="page" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="history.html">Our History</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link scroll-to-contact" href=".downUs">Contact</a>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="aboutUsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                About Us
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="aboutUsDropdown">
+                                <li><a class="dropdown-item" href="ourTeam.html">Our Team</a></li>
+                                <li><a class="dropdown-item" href="project.html">Our Work</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="getInvolvedDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Get Involved
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="getInvolvedDropdown">
+                                <li><a class="dropdown-item" href="volunteer.html">Volunteer</a></li>
+                                <li><a class="dropdown-item" href="visit.html">Make a Visit</a></li>
+                                <li><a class="dropdown-item" href="tourism.html">Tour With Us</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+    
+                    <!-- Call-to-Action Button -->
+                    <a href="donation.html" class="btn heroButton btn-lg d-flex align-items-center gap-2 px-4 py-3 rounded-pill shadow-lg" role="button" style="background: linear-gradient(90deg, #ff7e5f, #feb47b);">
+                        <i class="bi bi-heart-fill text-white fs-6 me-6"></i>
+                        <span class="herodonation text-white fw-bold">Donate</span>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+        
+    <section class="donation-section py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="container text-center">
+            <!-- Section Title -->
+            <div class="mb-5 mt-5">
+                <h2 class="fw-bold display-4 mb-3" style="color: #2d3e50;">Empower Communities with Your Support</h2>
+                <p class="lead text-secondary mb-0" style="max-width: 800px; margin: 0 auto;">
+                    Every contribution directly impacts lives through education, healthcare, and sustainable development.
+                </p>
+            </div>
+    
+            <!-- Bank Transfer Card -->
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="card shadow-lg rounded-4 border-0 p-4 p-md-5" 
+                         style="background: white; transition: transform 0.3s ease;">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="icon-wrapper bg-primary-gradient rounded-3 p-3 d-inline-block">
+                                <i class="bi bi-bank2 fs-2 text-white"></i>
+                            </div>
+                            <h3 class="mt-4 mb-3 fw-bold" style="color: #2d3e50; font-size: 1.5rem;">
+                                Direct Bank Transfer
+                            </h3>
+                        </div>
+    
+                        <div class="card-body px-0 px-md-3">
+                            <!-- Enhanced Bank Details with Copy Functionality -->
+                            <div class="bank-details text-start">
+                                <div class="detail-item d-flex align-items-center mb-2 p-2 rounded-3 hover-shadow">
+                                    <i class="bi bi-building me-3 text-primary fs-5"></i>
+                                    <div>
+                                        <p class="mb-0 text-secondary small">Bank Name</p>
+                                        <p class="mb-0 fw-semibold">Nation Microfinance Bank (NMB)</p>
+                                    </div>
+                                </div>
+    
+                                <div class="detail-item d-flex align-items-center mb-2 p-2 rounded-3 hover-shadow">
+                                    <i class="bi bi-person-badge me-3 text-primary fs-5"></i>
+                                    <div>
+                                        <p class="mb-0 text-secondary small">Account Name</p>
+                                        <p class="mb-0 fw-semibold">Osim Foundation</p>
+                                    </div>
+                                </div>
+                                <div class="detail-item d-flex align-items-center mb-2 p-2 rounded-3 hover-shadow">
+                                    <i class="bi bi-globe me-3 text-primary fs-5"></i>
+                                    <div>
+                                        <p class="mb-0 text-secondary small">Swift Code</p>
+                                        <p class="mb-0 fw-semibold d-flex align-items-center gap-2">
+                                            <span>NMIBTZTZ</span>
+                                            <button class="btn btn-sm btn-outline-primary py-1 px-2 copy-btn">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="detail-item d-flex align-items-center mb-2 p-2 rounded-3 hover-shadow">
+                                    <i class="bi bi-credit-card me-3 text-primary fs-5"></i>
+                                    <div>
+                                        <p class="mb-0 text-secondary small">Account Number</p>
+                                        <p class="mb-0 fw-semibold d-flex align-items-center gap-2">
+                                            <span>42510024014</span>
+                                            <button class="btn btn-sm btn-outline-primary py-1 px-2 copy-btn">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Postal Address -->
+                            <div class="detail-item d-flex align-items-center mb-3 p-3 rounded-3 hover-shadow">
+                                <i class="bi bi-mailbox me-3 text-primary fs-5"></i>
+                                <div>
+                                    <p class="mb-0 text-secondary small">Postal Address</p>
+                                    <p class="mb-0 fw-semibold">P.O BOX 8500, Namanga Arusha-Tanzania</p>
+                                </div>
+                            </div>
+                        </div>
+
+    
+                                <!-- Repeat similar structure for other details -->
+                            </div>
+    
+                            <!-- Additional Information -->
+                            <div class="alert alert-info mt-4 text-start">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Please include "Friends of Osim Foundation" in the transaction reference.
+                            </div>
+    
+                            <!-- Enhanced CTA Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mt-5">
+                                <a href="bank-details.pdf" 
+                                   class="btn btn-primary btn-lg px-4 py-3 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                                   style="background: linear-gradient(135deg, #4a90e2 0%, #2d3e50 100%); border: none;"
+                                   download>
+                                    <i class="bi bi-download fs-5"></i>
+                                    Download Banking Details
+                                </a>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Security Badges -->
+            <div class="row mt-5 g-3 justify-content-center">
+                <div class="col-auto">
+                    <div class="d-flex align-items-center gap-2 text-muted">
+                        <i class="bi bi-shield-lock fs-5 text-success"></i>
+                        <span class="small">SSL Secure Transaction</span>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex align-items-center gap-2 text-muted">
+                        <i class="bi bi-patch-check fs-5 text-primary"></i>
+                        <span class="small">Verified Non-Profit Organization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+        <script>
+  document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const text = e.target.closest('.detail-item').querySelector('span').innerText;
+                navigator.clipboard.writeText(text);
+                button.innerHTML = '<i class="bi bi-check2"></i>';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="bi bi-clipboard"></i>';
+                }, 2000);
+            });
+        });
+        </script>
+            
+      
+    <!-- Include Bootstrap JS (optional, for certain features like modal) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+   
+</body>
+</html>
