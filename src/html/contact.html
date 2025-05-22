@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact OSIM Foundation</title>
+    <link rel="stylesheet" href="/src/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="../../assets/icons/bootstrap-icons.min.css">
+    <style>
+        .contact-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../../assets/images/melfard.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,126,95,0.3), rgba(254,180,123,0.3), rgba(132,250,176,0.3), rgba(143,211,244,0.3));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .contact-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
+        }
+        
+        .contact-card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .contact-form {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-form::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,126,95,0.05), transparent);
+            animation: rotate 20s linear infinite;
+            z-index: 0;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .form-control {
+            border: none;
+            border-bottom: 2px solid #eee;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-control:focus {
+            box-shadow: none;
+            border-bottom-color: #ff7e5f;
+        }
+        
+        .floating-label {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .floating-label label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            color: #999;
+        }
+        
+        .floating-label .form-control:focus + label,
+        .floating-label .form-control:not(:placeholder-shown) + label {
+            top: -20px;
+            font-size: 12px;
+            color: #ff7e5f;
+        }
+        
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            border: none;
+        }
+        
+        .contact-info-item {
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        .contact-info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .contact-info-item i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid navs">
+            <!-- Logo -->
+            <a class="navbar-brand osimname fw-bolder fs-4" href="index.html">OSIM FOUNDATION</a>
+    
+            <!-- Toggler Button -->
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Sidebar/Offcanvas -->
+            <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel">OSIM FOUNDATION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+    
+                <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-1">
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav justify-content-center align-items-center fs-6 flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="/src/html/history.html">Our History</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link active" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="aboutUsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                About Us
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="aboutUsDropdown">
+                                <li><a class="dropdown-item" href="/src/html/ourTeam.html">Our Team</a></li>
+                                <li><a class="dropdown-item" href="/src/html/project.html">Our Work</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="getInvolvedDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Get Involved
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="getInvolvedDropdown">
+                                <li><a class="dropdown-item" href="/src/html/volunteer.html">Volunteer</a></li>
+                                <li><a class="dropdown-item"href="/src/html/visit.html">Make a Visit</a></li>
+                                <li><a class="dropdown-item" href="/src/html/tourism.html">Tour With Us</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+    
+                    <!-- Call-to-Action Button -->
+                    <a href="/src/html/donation.html" class="btn heroButton btn-lg d-flex align-items-center gap-2 px-4 py-3 rounded-pill shadow-lg" role="button" style="background: linear-gradient(90deg, #ff7e5f, #feb47b);">
+                        <i class="bi bi-heart-fill text-white fs-6 me-6"></i>
+                        <span class="herodonation text-white fw-bold">Donate</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold mb-4">Get In Touch With Us</h1>
+                    <p class="lead mb-5">We'd love to hear from you! Reach out through any of our channels below.</p>
+                    <a href="#contact-form" class="btn btn-light btn-lg px-4 py-3 rounded-pill shadow pulse-animation" style="background: linear-gradient(90deg, #ff7e5f, #feb47b); color: white; font-weight: bold;">
+                        <i class="bi bi-envelope-fill me-2"></i> Send a Message
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Address -->
+                <div class="col-md-4">
+                    <div class="contact-card contact-info-item text-center p-4 h-100">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <h3 class="fw-bold mb-3">Our Location</h3>
+                        <p class="mb-0">OSIM Foundation<br>
+                        P.O BOX 8500<br>
+                        Namanga-Arusha, Tanzania</p>
+                    </div>
+                </div>
+                
+                <!-- Contact Details -->
+                <div class="col-md-4">
+                    <div class="contact-card contact-info-item text-center p-4 h-100">
+                        <i class="bi bi-telephone-fill"></i>
+                        <h3 class="fw-bold mb-3">Contact Us</h3>
+                        <p class="mb-1"><strong>Phone:</strong> +255 766 876 286</p>
+                        <p class="mb-1"><strong>Email:</strong> info@osimfoundation.org</p>
+                        <p class="mb-0"><strong>Hours:</strong> Mon-Fri, 8am-5pm</p>
+                    </div>
+                </div>
+                
+                <!-- Emergency Contact -->
+                <div class="col-md-4">
+                    <div class="contact-card contact-info-item text-center p-4 h-100">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <h3 class="fw-bold mb-3">Emergency</h3>
+                        <p class="mb-1">For urgent matters outside business hours</p>
+                        <p class="mb-0"><strong>Call:</strong> +255 766 876 286</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Connect With Us</h2>
+                <p class="lead">Follow our journey and stay updated on our latest projects</p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Instagram -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="https://www.instagram.com/askatechforge" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">
+                            <i class="bi bi-instagram"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">Instagram</p>
+                    </a>
+                </div>
+                
+                <!-- WhatsApp -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="https://wa.me/+255766876286" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #25D366, #128C7E);">
+                            <i class="bi bi-whatsapp"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">WhatsApp</p>
+                    </a>
+                </div>
+                
+                <!-- Twitter -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="https://twitter.com/AskaIsDon1" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #1DA1F2, #0d8ecf);">
+                            <i class="bi bi-twitter-x"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">Twitter</p>
+                    </a>
+                </div>
+                
+                <!-- Facebook -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="https://facebook.com/OsimFoundation" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #1877F2, #0a5dbb);">
+                            <i class="bi bi-facebook"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">Facebook</p>
+                    </a>
+                </div>
+                
+                <!-- Email -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="mailto:askaisdon@gmail.com" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #D44638, #c23321);">
+                            <i class="bi bi-envelope-at"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">Email</p>
+                    </a>
+                </div>
+                
+                <!-- YouTube -->
+                <div class="col-6 col-sm-4 col-md-2">
+                    <a href="#" class="text-decoration-none">
+                        <div class="social-icon" style="background: linear-gradient(45deg, #FF0000, #cc0000);">
+                            <i class="bi bi-youtube"></i>
+                        </div>
+                        <p class="text-center mt-2 fw-bold">YouTube</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form and Map -->
+    <section class="py-5" id="contact-form">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Contact Form -->
+                <div class="col-lg-6">
+                    <div class="contact-form">
+                        <div class="position-relative" style="z-index: 1;">
+                            <h2 class="display-5 fw-bold mb-4 text-center" style="background: linear-gradient(90deg, #ff7e5f, #feb47b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                                Send Us a Message
+                            </h2>
+                            <form>
+                                <div class="floating-label mb-4">
+                                    <input type="text" class="form-control" id="name" placeholder=" ">
+                                    <label for="name">Your Name</label>
+                                </div>
+                                <div class="floating-label mb-4">
+                                    <input type="email" class="form-control" id="email" placeholder=" ">
+                                    <label for="email">Email Address</label>
+                                </div>
+                                <div class="floating-label mb-4">
+                                    <input type="tel" class="form-control" id="phone" placeholder=" ">
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                                <div class="floating-label mb-4">
+                                    <textarea class="form-control" id="message" rows="3" placeholder=" "></textarea>
+                                    <label for="message">Your Message</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" style="background: linear-gradient(90deg, #ff7e5f, #feb47b); border: none;">
+                                    Send Message <i class="bi bi-send-fill ms-2"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map -->
+                <div class="col-lg-6">
+                    <div class="h-100">
+                        <h2 class="display-5 fw-bold mb-4 text-center" style="background: linear-gradient(90deg, #84fab0, #8fd3f4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                            Find Us
+                        </h2>
+                        <div class="map-container h-100">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10974448.97276747!2d29.20718355625!3d-6.36902875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185b5c49e366894f%3A0x41d6b0c29558550!2sTanzania!5e0!3m2!1sen!2sus!4v1696524779882!5m2!1sen!2sus&zoom=6" 
+                                allowfullscreen="" loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Contact -->
+ 
+
+    <!-- FAQ Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Frequently Asked Questions</h2>
+                <p class="lead">Find quick answers to common questions</p>
+            </div>
+            
+            <div class="accordion" id="faqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            How can I volunteer with OSIM Foundation?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We're always looking for passionate volunteers! You can apply through our volunteer page or contact our Volunteer Coordinator directly. We have opportunities in healthcare, education, community development, and more.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            What's the best way to make a donation?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can make a secure donation through our website's donation page. We accept various payment methods including credit cards, mobile payments, and bank transfers. All donations are tax-deductible.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Can I visit your projects in Tanzania?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Absolutely! We welcome visitors to see our work firsthand. Please check our "Make a Visit" page for more information on scheduling a visit. We recommend planning at least 2 months in advance.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            How can I partner with OSIM Foundation?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We're open to partnerships with organizations, businesses, and individuals who share our vision. Please contact our Executive Director to discuss potential collaboration opportunities.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            What areas in Tanzania do you serve?
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Our primary focus is on remote Maasai communities in Northern Tanzania, particularly in the Arusha region. However, we're expanding our reach to other underserved areas as resources allow.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white" style="background: linear-gradient(90deg, #ff7e5f, #feb47b);">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-4">Ready to Make a Difference?</h2>
+            <p class="lead mb-5">Join us in our mission to create lasting change in Tanzanian communities.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/src/html/donation.html" class="btn btn-light btn-lg px-4 py-3 rounded-pill shadow" style="color: #ff7e5f; font-weight: bold;">
+                    <i class="bi bi-heart-fill me-2"></i> Donate Now
+                </a>
+                <a href="/src/html/volunteer.html" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill shadow">
+                    <i class="bi bi-people-fill me-2"></i> Volunteer
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section py-4" style="background-color: #343a40; color: white;">
+        <div class="container">
+            <div class="row gy-4">
+                <!-- Contact Links -->
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <h2 class="display-6 fw-bold text-uppercase text-center text-md-start mb-3">Contact</h2>
+                    <address class="text-center text-md-start">
+                        OSIM Foundation<br>
+                        P.O BOX 8500<br>
+                        Namanga-Arusha<br>
+                        Phone: +255766876286<br>
+                        Email: <a href="mailto:info@osimfoundation.org" class="text-decoration-none text-white">info@osimfoundation.org</a>
+                    </address>
+                </div>
+    
+                <!-- Social Media Icons -->
+                <div class="col-sm-12 col-md-6 text-center text-md-end">
+                    <h2 class="display-6 fw-bold text-uppercase mb-3">Follow Us</h2>
+                    <div class="social-icons d-flex justify-content-center justify-content-md-end gap-3">
+                        <a href="https://www.instagram.com/askatechforge" class="text-decoration-none text-white fs-4"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/+255766876286" class="text-decoration-none text-white fs-4"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://twitter.com/AskaIsDon1" class="text-decoration-none text-white fs-4"><i class="bi bi-twitter-x"></i></a>
+                        <a href="https://facebook.com/OsimFoundation" class="text-decoration-none text-white fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="mailto:askaisdon@gmail.com" class="text-decoration-none text-white fs-4"><i class="bi bi-envelope-at"></i></a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Copyright Information -->
+            <div class="text-center mt-4">
+                <p class="mb-0">Designed by <strong>askaClouds</strong> &bull; &copy; 2025 Osim Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Animation for form labels
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.nextElementSibling.classList.add('active');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.nextElementSibling.classList.remove('active');
+                }
+            });
+            
+            // Initialize if there's already content
+            if (input.value !== '') {
+                input.nextElementSibling.classList.add('active');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Animation for contact cards on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.contact-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
