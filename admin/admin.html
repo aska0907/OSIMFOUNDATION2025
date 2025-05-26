@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSIM Foundation - News Admin</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #f8f9fc;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fc;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background-color: #343a40;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-brand {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-brand img {
+            max-height: 40px;
+            margin-right: 10px;
+        }
+        
+        .sidebar-nav {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-item {
+            position: relative;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+        
+        .topbar {
+            height: 70px;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .content-wrapper {
+            padding: 20px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .analytics-card {
+            border-left: 0.25rem solid var(--primary-color);
+        }
+        
+        .analytics-card.primary {
+            border-left-color: var(--primary-color);
+        }
+        
+        .analytics-card.success {
+            border-left-color: #1cc88a;
+        }
+        
+        .analytics-card.info {
+            border-left-color: #36b9cc;
+        }
+        
+        .analytics-card.warning {
+            border-left-color: #f6c23e;
+        }
+        
+        .editor-toolbar {
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .editor-toolbar button {
+            margin-right: 5px;
+        }
+        
+        .editor-content {
+            min-height: 200px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        
+        .image-preview-container {
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .badge-category {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .badge-featured {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+            
+            .sidebar.active {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        /* Login Page */
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .login-card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .login-logo img {
+            max-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container (shown by default) -->
+    <div id="loginContainer" class="login-container" style="display: none;">
+        <div class="login-card card">
+            <div class="card-body">
+                <div class="login-logo">
+                    <img src="https://via.placeholder.com/150x50?text=OSIM+Foundation" alt="OSIM Foundation Logo">
+                </div>
+                <h3 class="text-center mb-4">Admin Login</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+                    <div id="loginError" class="text-danger mt-2 text-center"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (hidden until login) -->
+    <div id="adminPanel" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <img src="https://via.placeholder.com/40x40?text=OSIM" alt="Logo">
+                <span>OSIM Admin</span>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="#dashboard" class="sidebar-link active" data-section="dashboard">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#publish" class="sidebar-link" data-section="publish">
+                        <i class="fas fa-fw fa-plus-circle"></i>
+                        <span>Publish News</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#manage" class="sidebar-link" data-section="manage">
+                        <i class="fas fa-fw fa-newspaper"></i>
+                        <span>Manage News</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#analytics" class="sidebar-link" data-section="analytics">
+                        <i class="fas fa-fw fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#settings" class="sidebar-link" data-section="settings">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Topbar -->
+            <nav class="topbar">
+                <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="topbar-user">
+                    <div class="dropdown">
+                        <a class="btn dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=fff" alt="User" class="rounded-circle" width="40">
+                            <span class="ml-2 d-none d-lg-inline">Admin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm mr-2"></i> Profile</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm mr-2"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt fa-sm mr-2"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Content Sections -->
+            <div class="content-wrapper">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section">
+                    <div class="container-fluid">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Dashboard Overview</h1>
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                            </a>
+                        </div>
+                        
+                        <!-- Analytics Cards -->
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card analytics-card primary h-100">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Total News</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="total-news">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-newspaper fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card analytics-card success h-100">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Published Today</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="today-news">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card analytics-card info h-100">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    Featured News</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="featured-news">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-star fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card analytics-card warning h-100">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    Drafts</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="draft-news">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-pen fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent News -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Recent News</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="#" id="viewAllNews">View All</a>
+                                                <a class="dropdown-item" href="#" id="exportNews">Export</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Author</th>
+                                                        <th>Category</th>
+                                                        <th>Date</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="recent-news-table">
+                                                    <!-- Recent news will be loaded here -->
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">Loading news...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush" id="activity-log">
+                                            <li class="list-group-item">Loading activity...</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Publish News Section -->
+                <section id="publish-section" class="content-section" style="display: none;">
+                    <div class="container-fluid">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Publish News</h1>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Article Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="newsForm">
+                                            <div class="mb-3">
+                                                <label for="newsTitle" class="form-label">News Title *</label>
+                                                <input type="text" class="form-control" id="newsTitle" placeholder="Enter news title" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="miniTitle" class="form-label">Author *</label>
+                                                <input type="text" class="form-control" id="miniTitle" placeholder="Enter author name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newsCategory" class="form-label">Category *</label>
+                                                <select class="form-control" id="newsCategory" required>
+                                                    <option value="">Select Category</option>
+                                                    <option value="menstrual-health">Menstrual Health</option>
+                                                    <option value="malnutrition">Malnutrition</option>
+                                                    <option value="education">Girls Education</option>
+                                                    <option value="community">Community</option>
+                                                    <option value="fundraising">Fundraising</option>
+                                                    <option value="events">Events</option>
+                                                    <option value="success-stories">Success Stories</option>
+                                                    <option value="volunteering">Volunteering</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newsContent" class="form-label">News Content *</label>
+                                                <div class="editor-toolbar">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('bold')">
+                                                        <i class="fas fa-bold"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('italic')">
+                                                        <i class="fas fa-italic"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('underline')">
+                                                        <i class="fas fa-underline"></i>
+                                                    </button>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-paragraph"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#" onclick="formatText('formatBlock', '<p>')">Paragraph</a>
+                                                            <a class="dropdown-item" href="#" onclick="formatText('formatBlock', '<h1>')">Heading 1</a>
+                                                            <a class="dropdown-item" href="#" onclick="formatText('formatBlock', '<h2>')">Heading 2</a>
+                                                            <a class="dropdown-item" href="#" onclick="formatText('formatBlock', '<h3>')">Heading 3</a>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('insertUnorderedList')">
+                                                        <i class="fas fa-list-ul"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('insertOrderedList')">
+                                                        <i class="fas fa-list-ol"></i>
+                                                    </button>
+                                                    <input type="color" id="textColor" class="d-none" onchange="formatText('foreColor', this.value)">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('textColor').click()">
+                                                        <i class="fas fa-palette"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertImage()">
+                                                        <i class="fas fa-image"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('createLink', prompt('Enter URL:'))">
+                                                        <i class="fas fa-link"></i>
+                                                    </button>
+                                                </div>
+                                                <div id="newsContent" class="editor-content" contenteditable="true"></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Publish Settings</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="newsStatus" class="form-label">Status *</label>
+                                            <select class="form-control" id="newsStatus">
+                                                <option value="draft">Draft</option>
+                                                <option value="published" selected>Published</option>
+                                                <option value="pending">Pending Review</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="publishDate" class="form-label">Publish Date</label>
+                                            <input type="datetime-local" class="form-control" id="publishDate">
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="featuredNews">
+                                            <label class="form-check-label" for="featuredNews">Featured News</label>
+                                        </div>
+                                        <button type="button" class="btn btn-primary w-100" id="publishNewsBtn">Publish News</button>
+                                        <button type="button" class="btn btn-outline-secondary w-100 mt-2" id="saveDraftBtn">Save as Draft</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Featured Image</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <input type="file" class="form-control" id="newsImage" accept="image/*">
+                                            <small class="form-text text-muted">Recommended size: 1200x630 pixels</small>
+                                        </div>
+                                        <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+                                            <img id="imagePreview" class="image-preview" src="" alt="Preview">
+                                            <button class="remove-image" onclick="removeImage()">&times;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card shadow">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Article Preview</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="articlePreview">
+                                            <h5 id="previewTitle">News Title</h5>
+                                            <p class="text-muted small mb-2">By <span id="previewAuthor">Author Name</span> | <span id="previewDate">Today</span></p>
+                                            <div id="previewContent">News content will appear here...</div>
+                                            <div class="mt-3">
+                                                <span class="badge badge-category" id="previewCategory">Category</span>
+                                                <span class="badge badge-featured ml-1" id="previewFeatured" style="display: none;">Featured</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Manage News Section -->
+                <section id="manage-section" class="content-section" style="display: none;">
+                    <div class="container-fluid">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Manage News</h1>
+                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="addNewsBtn">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add News
+                            </button>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search news..." id="newsSearch">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="searchNewsBtn">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="btn-group float-right">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Filter by Category
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item filter-category" href="#" data-category="all">All Categories</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="menstrual-health">Menstrual Health</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="malnutrition">Malnutrition</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="education">Girls Education</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="community">Community</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="fundraising">Fundraising</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="events">Events</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="success-stories">Success Stories</a>
+                                        <a class="dropdown-item filter-category" href="#" data-category="volunteering">Volunteering</a>
+                                    </div>
+                                </div>
+                                <div class="btn-group float-right ml-2">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Filter by Status
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item filter-status" href="#" data-status="all">All Statuses</a>
+                                        <a class="dropdown-item filter-status" href="#" data-status="published">Published</a>
+                                        <a class="dropdown-item filter-status" href="#" data-status="draft">Drafts</a>
+                                        <a class="dropdown-item filter-status" href="#" data-status="pending">Pending</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">All News Articles</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="newsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Author</th>
+                                                <th>Category</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Views</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="newsTableBody">
+                                            <!-- News will be loaded here -->
+                                            <tr>
+                                                <td colspan="7" class="text-center">Loading news...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="News pagination">
+                                    <ul class="pagination justify-content-center mb-0" id="newsPagination">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics-section" class="content-section" style="display: none;">
+                    <div class="container-fluid">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">News Analytics</h1>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Last 7 Days
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item filter-analytics" href="#" data-range="7">Last 7 Days</a>
+                                    <a class="dropdown-item filter-analytics" href="#" data-range="30">Last 30 Days</a>
+                                    <a class="dropdown-item filter-analytics" href="#" data-range="90">Last 90 Days</a>
+                                    <a class="dropdown-item filter-analytics" href="#" data-range="365">Last Year</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item filter-analytics" href="#" data-range="all">All Time</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Total News Views</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalViews">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-eye fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Average Views per Article</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="avgViews">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-chart-bar fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    Most Viewed Article</div>
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800" id="mostViewed">-</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-star fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Views Over Time</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="viewsChart" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Views by Category</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="categoryChart" height="217"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Top Performing Articles</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Category</th>
+                                                        <th>Views</th>
+                                                        <th>Published Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="topArticlesTable">
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">Loading top articles...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings-section" class="content-section" style="display: none;">
+                    <div class="container-fluid">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Admin Settings</h1>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Account Settings</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="accountSettingsForm">
+                                            <div class="form-group">
+                                                <label for="adminName">Admin Name</label>
+                                                <input type="text" class="form-control" id="adminName" value="Admin User">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="adminEmail">Email Address</label>
+                                                <input type="email" class="form-control" id="adminEmail" value="admin@example.com">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Account</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="passwordChangeForm">
+                                            <div class="form-group">
+                                                <label for="currentPassword">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="newPassword">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="confirmPassword">Confirm New Password</label>
+                                                <input type="password" class="form-control" id="confirmPassword">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card shadow">
+                                    <div class="card-header py-3 bg-danger text-white">
+                                        <h6 class="m-0 font-weight-bold">Danger Zone</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <button class="btn btn-outline-danger" data-toggle="modal" data-target="#clearAllModal">
+                                            <i class="fas fa-trash mr-2"></i>Clear All News
+                                        </button>
+                                        <small class="form-text text-muted">This action cannot be undone. All news will be permanently deleted.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear All Modal -->
+    <div class="modal fade" id="clearAllModal" tabindex="-1" role="dialog" aria-labelledby="clearAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="clearAllModalLabel">Confirm Clear All News</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete ALL news articles? This action cannot be undone.</p>
+                    <p class="text-danger"><strong>Warning:</strong> All news data will be permanently removed from the database.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmClearAll">Delete All News</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit News Modal -->
+    <div class="modal fade" id="editNewsModal" tabindex="-1" role="dialog" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNewsModalLabel">Edit News Article</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editNewsForm">
+                        <input type="hidden" id="editNewsId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="editTitle">Title *</label>
+                                    <input type="text" class="form-control" id="editTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAuthor">Author *</label>
+                                    <input type="text" class="form-control" id="editAuthor" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editCategory">Category *</label>
+                                    <select class="form-control" id="editCategory" required>
+                                        <option value="menstrual-health">Menstrual Health</option>
+                                        <option value="malnutrition">Malnutrition</option>
+                                        <option value="education">Girls Education</option>
+                                        <option value="community">Community</option>
+                                        <option value="fundraising">Fundraising</option>
+                                        <option value="events">Events</option>
+                                        <option value="success-stories">Success Stories</option>
+                                        <option value="volunteering">Volunteering</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editContent">Content *</label>
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('bold')">
+                                            <i class="fas fa-bold"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('italic')">
+                                            <i class="fas fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('underline')">
+                                            <i class="fas fa-underline"></i>
+                                        </button>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-paragraph"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#" onclick="formatEditText('formatBlock', '<p>')">Paragraph</a>
+                                                <a class="dropdown-item" href="#" onclick="formatEditText('formatBlock', '<h1>')">Heading 1</a>
+                                                <a class="dropdown-item" href="#" onclick="formatEditText('formatBlock', '<h2>')">Heading 2</a>
+                                                <a class="dropdown-item" href="#" onclick="formatEditText('formatBlock', '<h3>')">Heading 3</a>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('insertUnorderedList')">
+                                            <i class="fas fa-list-ul"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('insertOrderedList')">
+                                            <i class="fas fa-list-ol"></i>
+                                        </button>
+                                        <input type="color" id="editTextColor" class="d-none" onchange="formatEditText('foreColor', this.value)">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('editTextColor').click()">
+                                            <i class="fas fa-palette"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertEditImage()">
+                                            <i class="fas fa-image"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatEditText('createLink', prompt('Enter URL:'))">
+                                            <i class="fas fa-link"></i>
+                                        </button>
+                                    </div>
+                                    <div id="editContent" class="editor-content" contenteditable="true"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="editStatus">Status *</label>
+                                    <select class="form-control" id="editStatus">
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                        <option value="pending">Pending Review</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFeatured">
+                                        <label class="form-check-label" for="editFeatured">
+                                            Featured News
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Current Image</label>
+                                    <img id="editCurrentImage" class="img-fluid mb-2" style="display: none;">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="editImage">
+                                        <label class="custom-file-label" for="editImage">Change image</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Publish Date</label>
+                                    <input type="datetime-local" class="form-control" id="editPublishDate">
+                                </div>
+                                <div class="form-group">
+                                    <label>Views</label>
+                                    <input type="text" class="form-control" id="editViews" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this news article? This action cannot be undone.</p>
+                    <p class="text-danger"><strong>Warning:</strong> All data for this article will be permanently removed.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Article</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery, Popper.js, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- DOMPurify for XSS protection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged, 
+            signOut,
+            updatePassword,
+            updateEmail,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            getDocs, 
+            doc, 
+            updateDoc, 
+            deleteDoc,
+            query,
+            where,
+            orderBy,
+            getDoc,
+            serverTimestamp,
+            startAfter,
+            limit,
+            startAt,
+            endAt
+        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytes, 
+            getDownloadURL, 
+            deleteObject 
+        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-storage.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAh2op_p29Oe1YNUmoXzOP_xgrqK7LcqRM",
+            authDomain: "osim-foundation.firebaseapp.com",
+            projectId: "osim-foundation",
+            storageBucket: "osim-foundation.appspot.com",
+            messagingSenderId: "401345535402",
+            appId: "1:401345535402:web:bba44429e25b6250e69fd3",
+            measurementId: "G-9BRRBECHJF"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const auth = getAuth(app);
+
+        // Global variables
+        let currentUser = null;
+        let newsData = [];
+        let currentNewsId = null;
+        let currentPage = 1;
+        const newsPerPage = 10;
+        let currentFilter = {
+            category: 'all',
+            status: 'all',
+            search: ''
+        };
+
+        // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        // News Form Elements
+        const newsForm = document.getElementById('newsForm');
+        const publishNewsBtn = document.getElementById('publishNewsBtn');
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+        const newsImage = document.getElementById('newsImage');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        // Preview Elements
+        const previewTitle = document.getElementById('previewTitle');
+        const previewAuthor = document.getElementById('previewAuthor');
+        const previewDate = document.getElementById('previewDate');
+        const previewContent = document.getElementById('previewContent');
+        const previewCategory = document.getElementById('previewCategory');
+        const previewFeatured = document.getElementById('previewFeatured');
+        
+        // Manage News Elements
+        const newsTableBody = document.getElementById('newsTableBody');
+        const newsSearch = document.getElementById('newsSearch');
+        const searchNewsBtn = document.getElementById('searchNewsBtn');
+        const addNewsBtn = document.getElementById('addNewsBtn');
+        const newsPagination = document.getElementById('newsPagination');
+        
+        // Analytics Elements
+        const totalNewsElement = document.getElementById('total-news');
+        const todayNewsElement = document.getElementById('today-news');
+        const featuredNewsElement = document.getElementById('featured-news');
+        const totalViewsElement = document.getElementById('totalViews');
+        const avgViewsElement = document.getElementById('avgViews');
+        const mostViewedElement = document.getElementById('mostViewed');
+        const topArticlesTable = document.getElementById('topArticlesTable');
+        let viewsChart = null;
+        let categoryChart = null;
+        
+        // Edit Modal Elements
+        const editNewsModal = document.getElementById('editNewsModal');
+        const editNewsForm = document.getElementById('editNewsForm');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const editCurrentImage = document.getElementById('editCurrentImage');
+        
+        // Delete Modal Elements
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
+        // Clear All Modal Elements
+        const clearAllModal = document.getElementById('clearAllModal');
+        const confirmClearAll = document.getElementById('confirmClearAll');
+        
+        // Settings Elements
+        const accountSettingsForm = document.getElementById('accountSettingsForm');
+        const passwordChangeForm = document.getElementById('passwordChangeForm');
+
+        // Initialize the admin panel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show login container by default
+            loginContainer.style.display = 'block';
+            adminPanel.style.display = 'none';
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Check auth state
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in
+                    currentUser = user;
+                    loginContainer.style.display = 'none';
+                    adminPanel.style.display = '';
+                    
+                    // Load initial data
+                    loadNews();
+                    updateAnalytics();
+                    loadActivityLog();
+                    
+                    // Show dashboard by default
+                    showSection('dashboard');
+                } else {
+                    // User is signed out
+                    currentUser = null;
+                    loginContainer.style.display = 'block';
+                    adminPanel.style.display = 'none';
+                }
+            });
+        });
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Login form
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    try {
+                        await signInWithEmailAndPassword(auth, email, password);
+                        loginError.textContent = '';
+                    } catch (error) {
+                        loginError.textContent = 'Login failed: ' + error.message;
+                    }
+                });
+            }
+            
+            // Logout button
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        await signOut(auth);
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    }
+                });
+            }
+            
+            // Sidebar toggle for mobile
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                    document.querySelector('.main-content').classList.toggle('active');
+                });
+            }
+            
+            // Sidebar navigation
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Update active state
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+            
+            // News form
+            if (newsForm) {
+                // Preview updates
+                document.getElementById('newsTitle').addEventListener('input', updatePreview);
+                document.getElementById('miniTitle').addEventListener('input', updatePreview);
+                document.getElementById('newsContent').addEventListener('input', updatePreview);
+                document.getElementById('newsCategory').addEventListener('change', updatePreview);
+                document.getElementById('featuredNews').addEventListener('change', updatePreview);
+                
+                // Image preview
+                newsImage.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            imagePreviewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Publish news button
+            if (publishNewsBtn) {
+                publishNewsBtn.addEventListener('click', () => {
+                    saveNews('published');
+                });
+            }
+            
+            // Save draft button
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', () => {
+                    saveNews('draft');
+                });
+            }
+            
+            // Add news button
+            if (addNewsBtn) {
+                addNewsBtn.addEventListener('click', () => {
+                    showSection('publish');
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    document.querySelector('.sidebar-link[data-section="publish"]').classList.add('active');
+                });
+            }
+            
+            // Search news
+            if (searchNewsBtn) {
+                searchNewsBtn.addEventListener('click', () => {
+                    currentFilter.search = newsSearch.value;
+                    currentPage = 1;
+                    loadNews();
+                });
+            }
+            
+            // Category filter
+            document.querySelectorAll('.filter-category').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentFilter.category = item.getAttribute('data-category');
+                    currentPage = 1;
+                    loadNews();
+                });
+            });
+            
+            // Status filter
+            document.querySelectorAll('.filter-status').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentFilter.status = item.getAttribute('data-status');
+                    currentPage = 1;
+                    loadNews();
+                });
+            });
+            
+            // Save edit button
+            if (saveEditBtn) {
+                saveEditBtn.addEventListener('click', saveEditedNews);
+            }
+            
+            // Confirm delete button
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', deleteNews);
+            }
+            
+            // Confirm clear all button
+            if (confirmClearAll) {
+                confirmClearAll.addEventListener('click', clearAllNews);
+            }
+            
+            // Account settings form
+            if (accountSettingsForm) {
+                accountSettingsForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('adminName').value;
+                    const email = document.getElementById('adminEmail').value;
+                    
+                    try {
+                        await updateProfile(currentUser, { displayName: name });
+                        await updateEmail(currentUser, email);
+                        alert('Account updated successfully!');
+                    } catch (error) {
+                        alert('Error updating account: ' + error.message);
+                    }
+                });
+            }
+            
+            // Password change form
+            if (passwordChangeForm) {
+                passwordChangeForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (newPassword !== confirmPassword) {
+                        alert('New passwords do not match!');
+                        return;
+                    }
+                    
+                    try {
+                        await updatePassword(currentUser, newPassword);
+                        alert('Password changed successfully!');
+                        passwordChangeForm.reset();
+                    } catch (error) {
+                        alert('Error changing password: ' + error.message);
+                    }
+                });
+            }
+        }
+
+        // Show a specific section
+        function showSection(section) {
+            contentSections.forEach(sec => {
+                sec.style.display = 'none';
+            });
+            
+            document.getElementById(`${section}-section`).style.display = '';
+            
+            // Load section-specific data
+            switch(section) {
+                case 'dashboard':
+                    updateDashboard();
+                    break;
+                case 'manage':
+                    loadNews();
+                    break;
+                case 'analytics':
+                    updateAnalytics();
+                    break;
+                case 'publish':
+                    resetNewsForm();
+                    break;
+            }
+        }
+
+        // Load all news articles
+        async function loadNews() {
+            try {
+                // Show loading state
+                newsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">Loading news...</td></tr>';
+                
+                // Build the query based on filters
+                let q = collection(db, 'news');
+                
+                // Apply filters
+                const conditions = [];
+                
+                if (currentFilter.category !== 'all') {
+                    conditions.push(where('category', '==', currentFilter.category));
+                }
+                
+                if (currentFilter.status !== 'all') {
+                    conditions.push(where('status', '==', currentFilter.status));
+                }
+                
+                if (currentFilter.search) {
+                    // For Firestore, we can't do full text search, so we'll search the beginning of titles
+                    conditions.push(orderBy('heading'));
+                    conditions.push(startAt(currentFilter.search));
+                    conditions.push(endAt(currentFilter.search + '\uf8ff'));
+                } else {
+                    // Default ordering by timestamp descending
+                    conditions.push(orderBy('timestamp', 'desc'));
+                }
+                
+                // Execute the query
+                const querySnapshot = await getDocs(query(q, ...conditions));
+                newsData = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const news = doc.data();
+                    news.id = doc.id;
+                    newsData.push(news);
+                });
+                
+                // Update pagination
+                updatePagination();
+                
+                // Display the current page
+                displayNewsPage();
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading news</td></tr>';
+            }
+        }
+
+        // Display news for the current page
+        function displayNewsPage() {
+            if (newsData.length === 0) {
+                newsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">No news found</td></tr>';
+                return;
+            }
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * newsPerPage;
+            const endIndex = Math.min(startIndex + newsPerPage, newsData.length);
+            const pageData = newsData.slice(startIndex, endIndex);
+            
+            // Clear the table
+            newsTableBody.innerHTML = '';
+            
+            // Add rows for each news item
+            pageData.forEach(news => {
+                const date = news.timestamp ? new Date(news.timestamp).toLocaleDateString() : 'N/A';
+                
+                const statusBadge = news.status === 'published' 
+                    ? '<span class="badge badge-success">Published</span>'
+                    : news.status === 'draft' 
+                        ? '<span class="badge badge-secondary">Draft</span>'
+                        : '<span class="badge badge-warning">Pending</span>';
+                
+                const featuredBadge = news.isFeatured 
+                    ? '<span class="badge badge-primary ml-1">Featured</span>'
+                    : '';
+                
+                const row = `
+                    <tr>
+                        <td>${news.heading || 'Untitled'}</td>
+                        <td>${news.miniTitle || 'Unknown'}</td>
+                        <td><span class="badge badge-category">${formatCategory(news.category)}</span></td>
+                        <td>${date}</td>
+                        <td>${statusBadge} ${featuredBadge}</td>
+                        <td>${news.views || 0}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${news.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${news.id}" data-image="${news.imageUrl || ''}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                newsTableBody.innerHTML += row;
+            });
+            
+            // Add event listeners to edit and delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editNews(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentNewsId = btn.dataset.id;
+                    const imageUrl = btn.dataset.image;
+                    $('#deleteModal').modal('show');
+                });
+            });
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(newsData.length / newsPerPage);
+            
+            // Clear existing pagination
+            newsPagination.innerHTML = '';
+            
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            prevLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayNewsPage();
+                }
+            });
+            newsPagination.appendChild(prevLi);
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLi = document.createElement('li');
+                pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageLi.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                pageLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    displayNewsPage();
+                });
+                newsPagination.appendChild(pageLi);
+            }
+            
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            nextLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayNewsPage();
+                }
+            });
+            newsPagination.appendChild(nextLi);
+        }
+
+        // Format category for display
+        function formatCategory(category) {
+            if (!category) return 'Uncategorized';
+            
+            const formatted = category.replace(/-/g, ' ');
+            return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+
+        // Save news article
+        async function saveNews(status) {
+            // Validate form
+            const title = document.getElementById('newsTitle').value;
+            const author = document.getElementById('miniTitle').value;
+            const category = document.getElementById('newsCategory').value;
+            const content = document.getElementById('newsContent').innerHTML;
+            const isFeatured = document.getElementById('featuredNews').checked;
+            const fileInput = document.getElementById('newsImage');
+            const imageFile = fileInput.files[0];
+            
+            if (!title || !author || !category || !content) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Disable buttons during save
+            publishNewsBtn.disabled = true;
+            saveDraftBtn.disabled = true;
+            publishNewsBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            saveDraftBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            
+            try {
+                let imageUrl = '';
+                
+                // Upload image if provided
+                if (imageFile) {
+                    const storageRef = ref(storage, `news-images/${Date.now()}_${imageFile.name}`);
+                    await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(storageRef);
+                }
+                
+                // Get the current timestamp
+                const timestamp = new Date().toISOString();
+                
+                // Save data to Firestore
+                await addDoc(collection(db, 'news'), {
+                    heading: title,
+                    miniTitle: author,
+                    content: DOMPurify.sanitize(content),
+                    category: category,
+                    isFeatured: isFeatured,
+                    status: status,
+                    imageUrl: imageUrl,
+                    views: 0,
+                    timestamp: timestamp,
+                    updatedAt: timestamp
+                });
+                
+                // Success - reset form and show message
+                alert('News article saved successfully!');
+                resetNewsForm();
+                
+                // Update news list and analytics
+                loadNews();
+                updateAnalytics();
+                addActivity(`Published new article: "${title}"`);
+                
+                // Show the manage news section
+                showSection('manage');
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector('.sidebar-link[data-section="manage"]').classList.add('active');
+                
+            } catch (error) {
+                console.error('Error saving news:', error);
+                alert('Error saving news: ' + error.message);
+            } finally {
+                // Re-enable buttons
+                publishNewsBtn.disabled = false;
+                saveDraftBtn.disabled = false;
+                publishNewsBtn.innerHTML = 'Publish News';
+                saveDraftBtn.innerHTML = 'Save as Draft';
+            }
+        }
+
+        // Reset the news form
+        function resetNewsForm() {
+            document.getElementById('newsForm').reset();
+            document.getElementById('newsContent').innerHTML = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('newsImage').value = '';
+            document.getElementById('featuredNews').checked = false;
+            updatePreview();
+        }
+
+        // Update the preview panel
+        function updatePreview() {
+            const title = document.getElementById('newsTitle').value;
+            const author = document.getElementById('miniTitle').value;
+            const content = document.getElementById('newsContent').innerHTML;
+            const category = document.getElementById('newsCategory').value;
+            const isFeatured = document.getElementById('featuredNews').checked;
+            const now = new Date();
+            
+            previewTitle.textContent = title || 'News Title';
+            previewAuthor.textContent = author || 'Author Name';
+            previewDate.textContent = now.toLocaleDateString();
+            previewContent.innerHTML = content || 'News content will appear here...';
+            previewCategory.textContent = formatCategory(category);
+            
+            if (isFeatured) {
+                previewFeatured.style.display = 'inline-block';
+            } else {
+                previewFeatured.style.display = 'none';
+            }
+        }
+
+        // Edit news article
+        async function editNews(newsId) {
+            try {
+                const docRef = doc(db, 'news', newsId);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const news = docSnap.data();
+                    currentNewsId = newsId;
+                    
+                    // Populate the edit form
+                    document.getElementById('editTitle').value = news.heading || '';
+                    document.getElementById('editAuthor').value = news.miniTitle || '';
+                    document.getElementById('editCategory').value = news.category || 'community';
+                    document.getElementById('editContent').innerHTML = news.content || '';
+                    document.getElementById('editStatus').value = news.status || 'draft';
+                    document.getElementById('editFeatured').checked = news.isFeatured || false;
+                    document.getElementById('editViews').value = news.views || 0;
+                    
+                    // Set publish date
+                    if (news.timestamp) {
+                        const date = new Date(news.timestamp);
+                        const formattedDate = date.toISOString().slice(0, 16);
+                        document.getElementById('editPublishDate').value = formattedDate;
+                    }
+                    
+                    // Show current image if exists
+                    if (news.imageUrl) {
+                        editCurrentImage.src = news.imageUrl;
+                        editCurrentImage.style.display = 'block';
+                    } else {
+                        editCurrentImage.style.display = 'none';
+                    }
+                    
+                    // Show the modal
+                    $('#editNewsModal').modal('show');
+                } else {
+                    alert('News article not found');
+                }
+            } catch (error) {
+                console.error('Error editing news:', error);
+                alert('Error editing news: ' + error.message);
+            }
+        }
+
+        // Save edited news
+        async function saveEditedNews() {
+            const title = document.getElementById('editTitle').value;
+            const author = document.getElementById('editAuthor').value;
+            const category = document.getElementById('editCategory').value;
+            const content = document.getElementById('editContent').innerHTML;
+            const status = document.getElementById('editStatus').value;
+            const isFeatured = document.getElementById('editFeatured').checked;
+            const publishDate = document.getElementById('editPublishDate').value;
+            const fileInput = document.getElementById('editImage');
+            const imageFile = fileInput.files[0];
+            
+            if (!title || !author || !category || !content) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Disable button during save
+            saveEditBtn.disabled = true;
+            saveEditBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            
+            try {
+                let imageUrl = null;
+                let updateData = {
+                    heading: title,
+                    miniTitle: author,
+                    content: DOMPurify.sanitize(content),
+                    category: category,
+                    status: status,
+                    isFeatured: isFeatured,
+                    updatedAt: new Date().toISOString()
+                };
+                
+                // If publish date changed
+                if (publishDate) {
+                    updateData.timestamp = new Date(publishDate).toISOString();
+                }
+                
+                // Upload new image if provided
+                if (imageFile) {
+                    const storageRef = ref(storage, `news-images/${Date.now()}_${imageFile.name}`);
+                    await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(storageRef);
+                    updateData.imageUrl = imageUrl;
+                    
+                    // Delete old image if exists
+                    const oldImageUrl = editCurrentImage.src;
+                    if (oldImageUrl && oldImageUrl !== '') {
+                        try {
+                            const oldImageRef = ref(storage, oldImageUrl);
+                            await deleteObject(oldImageRef);
+                        } catch (error) {
+                            console.log('Error deleting old image:', error);
+                        }
+                    }
+                }
+                
+                // Update the document
+                const docRef = doc(db, 'news', currentNewsId);
+                await updateDoc(docRef, updateData);
+                
+                // Success
+                alert('News article updated successfully!');
+                $('#editNewsModal').modal('hide');
+                
+                // Update news list and analytics
+                loadNews();
+                updateAnalytics();
+                addActivity(`Updated article: "${title}"`);
+                
+            } catch (error) {
+                console.error('Error saving news:', error);
+                alert('Error saving news: ' + error.message);
+            } finally {
+                // Re-enable button
+                saveEditBtn.disabled = false;
+                saveEditBtn.innerHTML = 'Save changes';
+            }
+        }
+
+        // Delete news article
+        async function deleteNews() {
+            try {
+                // Get the document reference
+                const docRef = doc(db, 'news', currentNewsId);
+                
+                // Get the document to check for image URL
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const news = docSnap.data();
+                    
+                    // Delete the document
+                    await deleteDoc(docRef);
+                    
+                    // Delete the image if exists
+                    if (news.imageUrl) {
+                        try {
+                            const imageRef = ref(storage, news.imageUrl);
+                            await deleteObject(imageRef);
+                        } catch (error) {
+                            console.log('Error deleting image:', error);
+                        }
+                    }
+                    
+                    // Success
+                    alert('News article deleted successfully!');
+                    $('#deleteModal').modal('hide');
+                    
+                    // Update news list and analytics
+                    loadNews();
+                    updateAnalytics();
+                    addActivity(`Deleted article: "${news.heading}"`);
+                }
+            } catch (error) {
+                console.error('Error deleting news:', error);
+                alert('Error deleting news: ' + error.message);
+            }
+        }
+
+        // Clear all news (dangerous!)
+        async function clearAllNews() {
+            try {
+                // Get all news documents
+                const querySnapshot = await getDocs(collection(db, 'news'));
+                
+                // Delete each document and its image
+                const deletePromises = [];
+                querySnapshot.forEach((doc) => {
+                    const news = doc.data();
+                    
+                    // Add document delete to promises
+                    deletePromises.push(deleteDoc(doc.ref));
+                    
+                    // Add image delete to promises if exists
+                    if (news.imageUrl) {
+                        const imageRef = ref(storage, news.imageUrl);
+                        deletePromises.push(deleteObject(imageRef).catch(error => {
+                            console.log('Error deleting image:', error);
+                        }));
+                    }
+                });
+                
+                // Wait for all deletions to complete
+                await Promise.all(deletePromises);
+                
+                // Success
+                alert('All news articles have been deleted!');
+                $('#clearAllModal').modal('hide');
+                
+                // Update news list and analytics
+                loadNews();
+                updateAnalytics();
+                addActivity('Cleared all news articles');
+                
+            } catch (error) {
+                console.error('Error clearing all news:', error);
+                alert('Error clearing all news: ' + error.message);
+            }
+        }
+
+        // Update dashboard with latest stats
+        async function updateDashboard() {
+            try {
+                // Get all news
+                const querySnapshot = await getDocs(collection(db, 'news'));
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                
+                let total = 0;
+                let todayCount = 0;
+                let featuredCount = 0;
+                let recentNews = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const news = doc.data();
+                    total++;
+                    
+                    // Check if published today
+                    if (news.timestamp) {
+                        const newsDate = new Date(news.timestamp);
+                        if (newsDate >= today) {
+                            todayCount++;
+                        }
+                    }
+                    
+                    // Check if featured
+                    if (news.isFeatured) {
+                        featuredCount++;
+                    }
+                    
+                    // Add to recent news (last 5)
+                    recentNews.push({
+                        id: doc.id,
+                        title: news.heading,
+                        author: news.miniTitle,
+                        category: news.category,
+                        date: news.timestamp,
+                        status: news.status,
+                        isFeatured: news.isFeatured
+                    });
+                });
+                
+                // Update counters
+                document.getElementById('total-news').textContent = total;
+                document.getElementById('today-news').textContent = todayCount;
+                document.getElementById('featured-news').textContent = featuredCount;
+                
+                // Sort recent news by date
+                recentNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                recentNews = recentNews.slice(0, 5);
+                
+                // Update recent news table
+                const recentNewsTable = document.getElementById('recent-news-table');
+                recentNewsTable.innerHTML = '';
+                
+                if (recentNews.length === 0) {
+                    recentNewsTable.innerHTML = '<tr><td colspan="5" class="text-center">No recent news</td></tr>';
+                } else {
+                    recentNews.forEach(news => {
+                        const date = news.date ? new Date(news.date).toLocaleDateString() : 'N/A';
+                        
+                        const statusBadge = news.status === 'published' 
+                            ? '<span class="badge badge-success">Published</span>'
+                            : news.status === 'draft' 
+                                ? '<span class="badge badge-secondary">Draft</span>'
+                                : '<span class="badge badge-warning">Pending</span>';
+                        
+                        const featuredBadge = news.isFeatured 
+                            ? '<span class="badge badge-primary ml-1">Featured</span>'
+                            : '';
+                        
+                        const row = `
+                            <tr>
+                                <td>${news.title || 'Untitled'}</td>
+                                <td>${news.author || 'Unknown'}</td>
+                                <td><span class="badge badge-category">${formatCategory(news.category)}</span></td>
+                                <td>${date}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${news.id}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        recentNewsTable.innerHTML += row;
+                    });
+                    
+                    // Add event listeners to edit buttons
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', () => editNews(btn.dataset.id));
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Error updating dashboard:', error);
+            }
+        }
+
+        // Update analytics charts and stats
+        async function updateAnalytics() {
+            try {
+                // Get all news
+                const querySnapshot = await getDocs(collection(db, 'news'));
+                const now = new Date();
+                const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                
+                let totalViews = 0;
+                let articleCount = 0;
+                let maxViews = 0;
+                let mostViewedArticle = '';
+                let categoryData = {};
+                let dateData = {};
+                let topArticles = [];
+                
+                // Initialize category data
+                const categories = [
+                    'menstrual-health', 'malnutrition', 'education', 
+                    'community', 'fundraising', 'events', 
+                    'success-stories', 'volunteering'
+                ];
+                
+                categories.forEach(cat => {
+                    categoryData[cat] = {
+                        views: 0,
+                        count: 0
+                    };
+                });
+                
+                // Initialize date data for last 30 days
+                for (let i = 29; i >= 0; i--) {
+                    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+                    const dateKey = date.toISOString().split('T')[0];
+                    dateData[dateKey] = 0;
+                }
+                
+                // Process each article
+                querySnapshot.forEach((doc) => {
+                    const news = doc.data();
+                    const views = news.views || 0;
+                    
+                    totalViews += views;
+                    articleCount++;
+                    
+                    // Track most viewed article
+                    if (views > maxViews) {
+                        maxViews = views;
+                        mostViewedArticle = news.heading || 'Untitled';
+                    }
+                    
+                    // Add to top articles list
+                    topArticles.push({
+                        title: news.heading || 'Untitled',
+                        category: news.category || 'uncategorized',
+                        views: views,
+                        date: news.timestamp || '',
+                        status: news.status || 'draft'
+                    });
+                    
+                    // Update category data
+                    if (news.category && categoryData[news.category]) {
+                        categoryData[news.category].views += views;
+                        categoryData[news.category].count++;
+                    }
+                    
+                    // Update date data if published in last 30 days
+                    if (news.timestamp) {
+                        const newsDate = new Date(news.timestamp);
+                        if (newsDate >= thirtyDaysAgo) {
+                            const dateKey = newsDate.toISOString().split('T')[0];
+                            if (dateData[dateKey] !== undefined) {
+                                dateData[dateKey] += views;
+                            }
+                        }
+                    }
+                });
+                
+                // Update stats
+                totalViewsElement.textContent = totalViews;
+                avgViewsElement.textContent = articleCount > 0 ? Math.round(totalViews / articleCount) : 0;
+                mostViewedElement.textContent = mostViewedArticle;
+                
+                // Sort top articles by views
+                topArticles.sort((a, b) => b.views - a.views);
+                topArticles = topArticles.slice(0, 5);
+                
+                // Update top articles table
+                const topArticlesTable = document.getElementById('topArticlesTable');
+                topArticlesTable.innerHTML = '';
+                
+                if (topArticles.length === 0) {
+                    topArticlesTable.innerHTML = '<tr><td colspan="5" class="text-center">No articles found</td></tr>';
+                } else {
+                    topArticles.forEach(article => {
+                        const date = article.date ? new Date(article.date).toLocaleDateString() : 'N/A';
+                        const statusBadge = article.status === 'published' 
+                            ? '<span class="badge badge-success">Published</span>'
+                            : article.status === 'draft' 
+                                ? '<span class="badge badge-secondary">Draft</span>'
+                                : '<span class="badge badge-warning">Pending</span>';
+                        
+                        const row = `
+                            <tr>
+                                <td>${article.title}</td>
+                                <td><span class="badge badge-category">${formatCategory(article.category)}</span></td>
+                                <td>${article.views}</td>
+                                <td>${date}</td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                        `;
+                        topArticlesTable.innerHTML += row;
+                    });
+                }
+                
+                // Prepare data for views chart (last 30 days)
+                const dateLabels = Object.keys(dateData).sort();
+                const viewCounts = dateLabels.map(date => dateData[date]);
+                
+                // Prepare data for category chart
+                const categoryLabels = categories.map(cat => formatCategory(cat));
+                const categoryViews = categories.map(cat => categoryData[cat].views);
+                
+                // Destroy existing charts if they exist
+                if (viewsChart) {
+                    viewsChart.destroy();
+                }
+                if (categoryChart) {
+                    categoryChart.destroy();
+                }
+                
+                // Create views chart
+                const viewsCtx = document.getElementById('viewsChart').getContext('2d');
+                viewsChart = new Chart(viewsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: dateLabels.map(date => new Date(date).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Views',
+                            data: viewCounts,
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)',
+                            pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                            borderWidth: 2,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (Number.isInteger(value)) {
+                                            return value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Create category chart
+                const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+                categoryChart = new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: categoryLabels,
+                        datasets: [{
+                            data: categoryViews,
+                            backgroundColor: [
+                                'rgba(78, 115, 223, 0.8)',
+                                'rgba(28, 200, 138, 0.8)',
+                                'rgba(54, 185, 204, 0.8)',
+                                'rgba(246, 194, 62, 0.8)',
+                                'rgba(231, 74, 59, 0.8)',
+                                'rgba(142, 68, 173, 0.8)',
+                                'rgba(52, 58, 64, 0.8)',
+                                'rgba(108, 117, 125, 0.8)'
+                            ],
+                            hoverBackgroundColor: [
+                                'rgba(78, 115, 223, 1)',
+                                'rgba(28, 200, 138, 1)',
+                                'rgba(54, 185, 204, 1)',
+                                'rgba(246, 194, 62, 1)',
+                                'rgba(231, 74, 59, 1)',
+                                'rgba(142, 68, 173, 1)',
+                                'rgba(52, 58, 64, 1)',
+                                'rgba(108, 117, 125, 1)'
+                            ],
+                            hoverBorderColor: "rgba(234, 236, 244, 1)",
+                        }],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right'
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error updating analytics:', error);
+            }
+        }
+
+        // Load activity log
+        async function loadActivityLog() {
+            // In a real app, you would fetch these from your database
+            // For now, we'll use sample data
+            const sampleActivities = [
+                { action: 'Logged in to the system', timestamp: new Date().toISOString() },
+                { action: 'Published article "New Health Initiative"', timestamp: new Date(Date.now() - 3600000).toISOString() },
+                { action: 'Updated site settings', timestamp: new Date(Date.now() - 86400000).toISOString() },
+                { action: 'Deleted draft article', timestamp: new Date(Date.now() - 172800000).toISOString() }
+            ];
+            
+            const activityLog = document.getElementById('activity-log');
+            activityLog.innerHTML = '';
+            
+            sampleActivities.forEach(activity => {
+                const date = new Date(activity.timestamp);
+                const timeString = date.toLocaleTimeString();
+                const dateString = date.toLocaleDateString();
+                
+                const item = document.createElement('li');
+                item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                item.innerHTML = `
+                    ${activity.action}
+                    <small class="text-muted">${dateString} ${timeString}</small>
+                `;
+                activityLog.appendChild(item);
+            });
+        }
+
+        // Add activity to log
+        function addActivity(action) {
+            const activityLog = document.getElementById('activity-log');
+            const date = new Date();
+            const timeString = date.toLocaleTimeString();
+            const dateString = date.toLocaleDateString();
+            
+            const item = document.createElement('li');
+            item.className = 'list-group-item d-flex justify-content-between align-items-center';
+            item.innerHTML = `
+                ${action}
+                <small class="text-muted">${dateString} ${timeString}</small>
+            `;
+            
+            // Insert at the top
+            if (activityLog.firstChild) {
+                activityLog.insertBefore(item, activityLog.firstChild);
+            } else {
+                activityLog.appendChild(item);
+            }
+            
+            // Keep only the last 10 activities
+            while (activityLog.children.length > 10) {
+                activityLog.removeChild(activityLog.lastChild);
+            }
+        }
+
+        // Format text in editor
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('newsContent').focus();
+            updatePreview();
+        }
+        
+        // Format text in edit editor
+        function formatEditText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('editContent').focus();
+        }
+        
+        // Insert image into editor
+        function insertImage() {
+            const url = prompt('Enter the image URL:');
+            if (url) {
+                document.execCommand('insertImage', false, url);
+                updatePreview();
+            }
+        }
+        
+        // Insert image into edit editor
+        function insertEditImage() {
+            const url = prompt('Enter the image URL:');
+            if (url) {
+                document.execCommand('insertImage', false, url);
+            }
+        }
+        
+        // Remove image preview
+        function removeImage() {
+            document.getElementById('newsImage').value = '';
+            imagePreviewContainer.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
